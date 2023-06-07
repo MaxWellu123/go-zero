@@ -33,6 +33,7 @@ type (
 // Be aware that later RunOption might overwrite previous one that write the same option.
 // The process will exit if error occurs.
 func MustNewServer(c RestConf, opts ...RunOption) *Server {
+	// 创建Server
 	server, err := NewServer(c, opts...)
 	if err != nil {
 		logx.Must(err)
@@ -44,10 +45,12 @@ func MustNewServer(c RestConf, opts ...RunOption) *Server {
 // NewServer returns a server with given config of c and options defined in opts.
 // Be aware that later RunOption might overwrite previous one that write the same option.
 func NewServer(c RestConf, opts ...RunOption) (*Server, error) {
+
 	if err := c.SetUp(); err != nil {
 		return nil, err
 	}
 
+	// 创建Server
 	server := &Server{
 		ngin:   newEngine(c),
 		router: router.NewRouter(),

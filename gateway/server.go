@@ -47,6 +47,8 @@ func MustNewServer(c GatewayConf, opts ...Option) *Server {
 // Start starts the gateway server.
 func (s *Server) Start() {
 	logx.Must(s.build())
+
+	// 启动服务
 	s.Server.Start()
 }
 

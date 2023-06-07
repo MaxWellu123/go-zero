@@ -303,6 +303,7 @@ func (ng *engine) signatureVerifier(signature signatureSetting) (func(chain.Chai
 }
 
 func (ng *engine) start(router httpx.Router, opts ...StartOption) error {
+	// 绑定路由
 	if err := ng.bindRoutes(router); err != nil {
 		return err
 	}
