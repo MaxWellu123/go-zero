@@ -20,7 +20,8 @@ const (
 
 var (
 	fillDefaultUnmarshaler = mapping.NewUnmarshaler(jsonTagKey, mapping.WithDefault())
-	loaders                = map[string]func([]byte, any) error{
+	// 提前储存加载的配置文件的函数
+	loaders = map[string]func([]byte, any) error{
 		".json": LoadFromJsonBytes,
 		".toml": LoadFromTomlBytes,
 		".yaml": LoadFromYamlBytes,
@@ -43,11 +44,13 @@ func FillDefault(v any) error {
 
 // Load loads config into v from file, .json, .yaml and .yml are acceptable.
 func Load(file string, v any, opts ...Option) error {
+	// 读取文件
 	content, err := os.ReadFile(file)
 	if err != nil {
 		return err
 	}
 
+	// 通过后缀文件判断是否支持当前类型
 	loader, ok := loaders[strings.ToLower(path.Ext(file))]
 	if !ok {
 		return fmt.Errorf("unrecognized file type: %s", file)
@@ -62,6 +65,7 @@ func Load(file string, v any, opts ...Option) error {
 		return loader([]byte(os.ExpandEnv(string(content))), v)
 	}
 
+	// 加载配置文件
 	return loader(content, v)
 }
 
@@ -122,6 +126,9 @@ func LoadConfigFromYamlBytes(content []byte, v any) error {
 
 // MustLoad loads config into v from path, exits on error.
 func MustLoad(path string, v any, opts ...Option) {
+	// 加载配置文件
+	// path 配置文件路径
+	// v 配置对象指针
 	if err := Load(path, v, opts...); err != nil {
 		log.Fatalf("error: config file %s, %s", path, err.Error())
 	}
