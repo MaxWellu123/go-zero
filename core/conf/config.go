@@ -324,6 +324,7 @@ func toLowerCaseInterface(v any, info *fieldInfo) any {
 	}
 }
 
+// 变成小写key
 func toLowerCaseKeyMap(m map[string]any, info *fieldInfo) map[string]any {
 	res := make(map[string]any)
 
@@ -359,6 +360,7 @@ func (e conflictKeyError) Error() string {
 	return fmt.Sprintf("conflict key %s, pay attention to anonymous fields", e.key)
 }
 
+// 获取完整名称
 func getFullName(parent, child string) string {
 	if len(parent) == 0 {
 		return child
